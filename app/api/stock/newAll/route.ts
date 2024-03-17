@@ -2,6 +2,8 @@ import connectMongo from "@/lib/connectMongo"
 import { stockItems } from "@/lib/menuItems"
 import Stock, { StockType } from "@/models/stock"
 
+export const dynamic = "force-dynamic"
+
 export async function GET() {
 
   await connectMongo()

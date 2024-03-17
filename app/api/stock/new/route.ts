@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
     await connectMongo()
         
     const newStock = await Stock.create({...stock})
-    await newStock.save().exec()
+    await newStock.save()
 
     return NextResponse.json({stock: newStock})
   } catch (error) {
