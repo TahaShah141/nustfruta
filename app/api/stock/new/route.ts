@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import Stock from "@/models/stock"
 import connectMongo from "@/lib/connectMongo"
 
-export const dynamic = 'force-dynamic' // defaults to auto
+export const dynamic = 'force-dynamic'
 
 export async function POST(request: NextRequest) {
 
@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
     await connectMongo()
         
     const newStock = await Stock.create({...stock})
-    await newStock.save()
+    await newStock.save().exec()
 
     return NextResponse.json({stock: newStock})
   } catch (error) {

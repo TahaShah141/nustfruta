@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import Stock from "@/models/stock"
 import connectMongo from "@/lib/connectMongo"
 
-export const dynamic = 'force-dynamic' // defaults to auto
+export const dynamic = 'force-dynamic'
 
 export async function POST(request: NextRequest) {
 
@@ -11,13 +11,11 @@ export async function POST(request: NextRequest) {
   try {
     await connectMongo()
 
-    const newStock = []
-
     for (const stockItem of stock) {
-      const newStockItem = await Stock.findByIdAndUpdate(stockItem._id, stockItem, {new: true})
-
-      newStock.push(newStockItem)
+      await Stock.findByIdAndUpdate(stockItem._id, {...stockItem}, {new: true}).exec()
     }
+
+    const newStock = await Stock.find().exec()
 
     return NextResponse.json({stock: newStock})
   } catch (error) {

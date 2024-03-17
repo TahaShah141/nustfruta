@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
     await connectMongo()
         
     const newOrder = await Order.create({...order})
-    await newOrder.save()
+    await newOrder.save().exec()
 
     if (Math.abs(newOrder.date.getTime() - Date.now()) <= 86400000 && newOrder.date.getDate() === new Date().getDate()) {
       const expandedOrder = await Order.findById(newOrder._id).populate("items.stock")
