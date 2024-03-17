@@ -77,7 +77,7 @@ export default function NewOrder() {
         }
       })
     }
-  }, [date])
+  }, [date, orderingToday])
 
   const [stock, setStock] = useState<StockType[]>([])
 
