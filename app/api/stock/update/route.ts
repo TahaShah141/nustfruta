@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
 
     for (const stockItem of stock) {
       const newStockItem = await Stock.findByIdAndUpdate(stockItem._id, stockItem, {new: true})
-
+      await newStockItem.save()
       newStock.push(newStockItem)
     }
 
