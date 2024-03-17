@@ -49,11 +49,11 @@ export default function Home() {
             <div className="h-20 aspect-square md:hidden">
               <Image src={logo} alt="logo" className="rounded-xl aspect-square"/>
             </div>
-            <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-3xl lg:text-5xl xl:text-6xl font-bold tracking-widest"><span className="hidden lg:inline-block">Welcome to</span> Nustfruta.</h1>
+            <h1 className="text-3xl xs:text-4xl sm:text-5xl md:text-3xl lg:text-5xl xl:text-6xl font-bold tracking-widest"><span className="hidden lg:inline-block">Welcome to</span> Nustfruta</h1>
           </div>
-          <p>Welcome to NustFruta, where freshness meets convenience. Discover a world of delicious and nutritious fruits, carefully selected and delivered straight to your doorstep. Embrace a healthier lifestyle with our premium selection of fresh fruits. Lets start your journey to a happier, healthier you</p>
-          <p>Indulge in a delightful array of fruits sourced from trusted growers, ensuring premium quality and unparalleled freshness. Begin your journey with NustFruta and experience the taste of pure goodness today</p>
-          <p className="text-muted-foreground italic font-semibold">Good Fruit comes at a cost. But great Health is Priceless</p>
+          <p>Welcome to NustFruta, where freshness meets convenience. Discover a world of delicious and nutritious fruits, carefully selected and delivered straight to your doorstep. Embrace a healthier lifestyle with our premium selection of fresh fruits. Lets start your journey to a happier, healthier you.</p>
+          <p>Indulge in a delightful array of fruits sourced from trusted growers, ensuring premium quality and unparalleled freshness. Begin your journey with NustFruta and experience the taste of pure goodness today.</p>
+          <p className="text-muted-foreground italic font-semibold">Good Fruit comes at a cost. But great Health is Priceless.</p>
         </div>
       </div>
 
@@ -61,7 +61,7 @@ export default function Home() {
 
       <div className="flex flex-col gap-8">
         <div className="flex gap-4 justify-between items-center">
-          <h1 className="text-3xl lg:text-5xl xl:text-6xl font-bold tracking-widest text-center">Our Menu</h1>
+          <h1 className="text-2xl lg:text-5xl xl:text-6xl font-bold tracking-widest text-center">Our Menu</h1>
           <Link href="/new" className="bg-primary text-primary-foreground text-center rounded-md p-2 md:p-3 md:text-2xl lg:text-3xl lg:p4 text-xl font-semibold text-mono">Order Now</Link>
         </div>
         <Carousel opts={{align: "start", loop: true}}>

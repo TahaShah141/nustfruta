@@ -83,7 +83,12 @@ export default function NewOrder() {
 
   useEffect(() => {
     const fetchStock = async () => {
-      const res = await fetch(process.env.NEXT_PUBLIC_BASE_URL + "api/stock")
+      const res = await fetch(process.env.NEXT_PUBLIC_BASE_URL + "api/stock", {
+        cache: "no-store",
+        next: {
+          revalidate: 10
+        }
+      })
       const {stockItems} = await res.json()
 
       console.log(stockItems)
@@ -185,11 +190,11 @@ export default function NewOrder() {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-2 min-[1450px]:grid-cols-3 sm:gap-3 gap-2">
             {stock.map((item) => 
               <Card className="flex sm:flex-col sm:justify-between items-center gap-3 sm:gap-2 p-3" key={item.name}>
-                <div className="flex justify-between w-full">
+                <div className="flex justify-between items-center w-full flex-col xs:flex-row">
                   <p className="text-sm xl:text-base">{item.name}</p>
-                  <Badge className="w-[4.5rem] justify-center" variant={"default"}>Rs.{item.price}</Badge>
+                  <Badge className="text-xs w-16 justify-center" variant={"default"}>Rs.{item.price}</Badge>
                 </div>
-                <div className="flex sm:flex-row-reverse gap-4 justify-between w-full">
+                <div className="flex sm:flex-row-reverse gap-1 justify-between w-full">
                   {(orderingToday && item.stock !== -1) ? <Badge variant={item.stock ? "secondary" : "destructive"} className="w-[4.5rem] justify-center">{`${item.stock ? `${item.stock} Left` : "Sold Out"}`}</Badge> : <div className="flex-1"></div>}
                   <StepPicker value={bill[item.name]?.quantity || 0} onChange={(quantity) => setBill(b => ({...b, [item.name]: {...item, quantity}}))} max={item.stock !== -1 && orderingToday ? item.stock : undefined}/>
                 </div>

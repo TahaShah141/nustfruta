@@ -32,6 +32,8 @@ import { Loading } from '@/components/custom/loading'
 import { StockItem, StockType } from '@/models/stock'
 import { Switch } from '@/components/ui/switch'
 import { StepPicker } from '@/components/custom/stepPicker'
+import { useToast } from '@/components/ui/use-toast'
+import { Toaster } from '@/components/ui/toaster'
 
 type StockDislayType = {
   name: string
@@ -60,12 +62,13 @@ const getOrders: () => Promise<{orders: OrderType[]}> = async () => {
 const getStock: () => Promise<{stockItems: StockType[]}> = async () => {
 
   const res = await fetch(process.env.NEXT_PUBLIC_BASE_URL + "api/stock", {
+    cache: "no-store"
   })
 
   return res.json()
 }
 
-const saveStock: (stock: StockType[]) => void = async (stock) => {
+const saveStock: (stock: StockType[], onSaveComplete: () => void) => Promise<StockType[]> = async (stock, onSaveComplete) => {
 
   console.log("Saving Stock")
   const res = await fetch(process.env.NEXT_PUBLIC_BASE_URL + "api/stock/update", {
@@ -78,7 +81,9 @@ const saveStock: (stock: StockType[]) => void = async (stock) => {
 
   const { stock: newStock } = await res.json()
 
-  console.log(newStock)
+  onSaveComplete()
+
+  return newStock
 }
 
 const getInventory: (orders: OrderType[]) => OrderBill[] = (orders) => {
@@ -234,6 +239,15 @@ const Orders = () => {
   const [loading, setLoading] = useState(true)
 
   const orders = getFutureOrders(allOrders)
+  const { toast } = useToast()
+
+  const onSaveComplete = () => {
+    toast({
+      description: "Stock Updated Successfully",
+    })
+
+    console.log(stock)
+  }
 
   const changeOrders = async (action: string, id: string) => {
     switch (action) {
@@ -283,14 +297,18 @@ const Orders = () => {
         </div>
       </TabsContent>
       <TabsContent value="inventory">
-        <Inventory bills={getInventory(orders.filter(order => !order.fulfilled))} stock={stock} setStock={setStock}/>
+        <Inventory onSaveComplete={onSaveComplete} bills={getInventory(orders.filter(order => !order.fulfilled))} stock={stock} setStock={setStock}/>
+        <Toaster />
       </TabsContent>
     </Tabs>}
     </>
   )
 }
 
-const Inventory: React.FC<{bills: OrderBill[], stock: StockType[], setStock: Dispatch<SetStateAction<StockType[]>>}> = ({bills, stock, setStock}) => {
+const Inventory: React.FC<{bills: OrderBill[], stock: StockType[], setStock: Dispatch<SetStateAction<StockType[]>>, onSaveComplete: () => void}> = ({bills, stock, setStock, onSaveComplete}) => {
+  
+  const [loading, setLoading] = useState(false)
+
   return (
     <Tabs defaultValue="grocery" className="flex flex-col w-full gap-2">
       <TabsList className="grid self-center w-3/4 sm:w-2/5 grid-cols-2">
@@ -326,8 +344,8 @@ const Inventory: React.FC<{bills: OrderBill[], stock: StockType[], setStock: Dis
             </Card>)}
           </div>
           <div className='w-full flex gap-4 justify-center'>
-            <Button className='w-64'  onClick={() => getStock().then(({stockItems}) => setStock(stockItems))} variant="outline">Cancel</Button>
-            <Button className='w-64' onClick={() => saveStock(stock)} >Save</Button>
+            <Button className='w-64' disabled={loading} onClick={() => {setLoading(true); getStock().then(({stockItems}) => {setStock(stockItems); setLoading(false)})}} variant="outline">Cancel</Button>
+            <Button className='w-64' disabled={loading} onClick={() => {setLoading(true) ;saveStock(stock, onSaveComplete).then(() => setLoading(false))}} >Save</Button>
           </div>
         </div>
       </TabsContent>

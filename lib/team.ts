@@ -14,27 +14,27 @@ export const teamMembers: TeamMember[] = [
   },
   {
     name: 'Muhammad Hammad',
-    quote: 'An ordinary boy with extraordinary abilities',
+    quote: 'An ordinary boy with extraordinary abilities.',
     src: logo.src
   },
   {
     name: 'Shahzil Asif',
-    quote: '',
+    quote: 'You miss all the shots that you dont take.',
     src: logo.src
   },
   {
     name: 'Zain Ikhlaq',
-    quote: 'The days are long but the decades are short',
+    quote: 'The days are long but the decades are short.',
     src: logo.src
   },
   {
     name: 'Abdullah Ajmal',
-    quote: 'Embrace the journey. Trust the Process',
+    quote: 'Embrace the journey. Trust the Process.',
     src: logo.src
   },
   {
     name: 'Ahmad Abdul Qadir',
-    quote: 'Guess what, Nobody Cares',
+    quote: 'Guess what, Nobody Cares.',
     src: logo.src
   },
 ]
