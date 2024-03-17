@@ -144,10 +144,10 @@ export default function NewOrder() {
             <div className="flex flex-col gap-2 xs:gap-4">
               <div className="flex flex-col gap-1 xs:gap-2">
                 <div className="flex w-full items-baseline justify-between">
-                  <p className="text-lg xs:text-2xl font-semibold">Account Name</p>
+                  <p className="text-lg xs:text-2xl font-semibold">Ahmed Abdul Qadir</p>
                 </div>
                 <div className="flex w-full items-baseline justify-between">
-                  <p className="text-muted-foreground text-xs xs:text-sm italic">Account Number</p>
+                  <p className="text-muted-foreground text-xs xs:text-sm italic">03052632624</p>
                   <p className="text-sm xs:text-base">Sadapay</p>
                 </div>
               </div>
@@ -190,7 +190,7 @@ export default function NewOrder() {
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-2 min-[1450px]:grid-cols-3 sm:gap-3 gap-2">
             {stock.map((item) => 
               <Card className="flex sm:flex-col sm:justify-between items-center gap-3 sm:gap-2 p-3" key={item.name}>
-                <div className="flex justify-between items-center w-full flex-col xs:flex-row">
+                <div className="flex justify-between items-center w-full flex-col-reverse gap-2 xs:flex-row">
                   <p className="text-sm xl:text-base">{item.name}</p>
                   <Badge className="text-xs w-16 justify-center" variant={"default"}>Rs.{item.price}</Badge>
                 </div>
