@@ -1,12 +1,5 @@
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "@/components/ui/carousel"
 
 import fruitList from "@/public/fruitList.jpg"
 import bucketList from "@/public/bucketList.jpg" 
@@ -17,6 +10,7 @@ import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import Image from "next/image";
 import { TeamMember, teamMembers } from "@/lib/team";
+import { CarouselWithIndicators } from "@/components/custom/carouselWithIndicators";
 
 const TeamCard: React.FC<{member: TeamMember}> = ({member}) => {
 
@@ -64,45 +58,24 @@ export default function Home() {
           <h1 className="text-2xl lg:text-5xl xl:text-6xl font-bold tracking-widest text-center">Our Menu</h1>
           <Link href="/new" className="bg-primary text-primary-foreground text-center rounded-md p-2 md:p-3 md:text-2xl lg:text-3xl lg:p4 text-xl font-semibold text-mono">Order Now</Link>
         </div>
-        <Carousel opts={{align: "start", loop: true}}>
-          <CarouselContent>
-            <CarouselItem className="xs:basis-1/2 md:basis-1/3 flex justify-center">
-              <Image src={fruitList} alt="Fruit List" className="rounded-xl"/>
-            </CarouselItem>
-            <CarouselItem className="xs:basis-1/2 md:basis-1/3 flex justify-center">
-              <Image src={bucketList} alt="Bucket List" className="rounded-xl"/>
-            </CarouselItem>
-            <CarouselItem className="xs:basis-1/2 md:basis-1/3 flex justify-center">
-              <Image src={fruitChaatList} alt="Fruit Chaat List" className="rounded-xl"/>
-            </CarouselItem>
-          </CarouselContent>
-          <div className="hidden md:block">
-            <CarouselPrevious />
-            <CarouselNext />
-          </div>
-        </Carousel>
+        <CarouselWithIndicators 
+        itemClassName="xs:basis-1/2 md:basis-1/3 flex justify-center" 
+        contentClassName="" 
+        indicatorClassName="md:hidden"
+        items={[
+          <Image src={fruitList} key={"Fruit List"} alt="Fruit List" className="rounded-xl"/>,
+          <Image src={bucketList} key={"Bucket List"} alt="Bucket List" className="rounded-xl"/>,
+          <Image src={fruitChaatList} key={"Fruit Chaat List"} alt="Fruit Chaat List" className="rounded-xl"/>
+        ]} />
       </div>
       
       <Separator />
       <div className="flex flex-col gap-8">
         <h1 className="text-3xl lg:text-5xl xl:text-6xl font-bold tracking-widest text-center">Our Team</h1>
-        <Carousel
-        opts={{
-          align: "start",
-          loop: true,
-        }}
-        >
-        <CarouselContent className="-ml-4 sm:-ml-8 md:-ml-12">
-          {teamMembers.map(teamMember => 
-          <CarouselItem key={teamMember.name} className="sm:basis-1/2 lg:basis-1/3 2xl:basis-1/4 pl-4 sm:pl-8 md:pl-12 flex justify-center">
-            <TeamCard member={teamMember} />
-          </CarouselItem>)}
-        </CarouselContent>
-        <div className="hidden md:block">
-          <CarouselPrevious />
-          <CarouselNext />
-        </div>
-      </Carousel>
+        <CarouselWithIndicators 
+        contentClassName="-ml-4 sm:-ml-8 md:-ml-12" 
+        itemClassName="sm:basis-1/2 lg:basis-1/3 2xl:basis-1/4 pl-4 sm:pl-8 md:pl-12 flex justify-center"
+        items={teamMembers.map(member => <TeamCard key={member.name} member={member} />)} />
       </div>
 
     </div>
