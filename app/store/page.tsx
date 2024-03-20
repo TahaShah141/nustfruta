@@ -181,8 +181,7 @@ const filterOrders: (orders: OrderType[], filters: {
 
 const OrderTable: React.FC<{orders: OrderType[], change: (action: string, id: string) => void}> = ({orders, change}) => {
 
-  if (orders.length === 0) return (<p className='text-center text-muted-foreground italic text-2xl'>No Orders Yet</p>)
-
+  
   const [filters, setFilters] = useState<{
     name: string
     phone: string
@@ -194,9 +193,11 @@ const OrderTable: React.FC<{orders: OrderType[], change: (action: string, id: st
     phone: "",
     date: undefined
   })
-
+  
+  if (orders.length === 0) return (<p className='text-center text-muted-foreground italic text-2xl'>No Orders Yet</p>)
+  
   const filteredOrders = filterOrders(orders, filters)
-
+  
   return (
     <div className='flex w-full flex-col gap-4'>
       <div className="flex lg:flex-row flex-col gap-2">
