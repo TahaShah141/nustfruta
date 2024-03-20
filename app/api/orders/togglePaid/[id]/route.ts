@@ -15,7 +15,7 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
   await connectMongo()
 
   const order = await Order.findById(id)
-  const toggledOrder = await Order.findByIdAndUpdate(id, {paid: !order?.paid}, {new: true})
+  const toggledOrder = await Order.findByIdAndUpdate(id, {paid: !order?.paid}, {new: true}).populate("items.stock").exec()
 
   return Response.json({toggledOrder})
 }

@@ -15,10 +15,12 @@ import { Cross1Icon } from "@radix-ui/react-icons";
 import { useEffect, useState } from "react";
 import { format } from "date-fns";
 import { StockType } from "@/models/stock";
-import { revalidatePath } from "next/cache";
 import { useRouter } from "next/navigation";
+// import { TimePicker, get12HourTime } from "@/components/custom/timePicker";
+import { Textarea } from "@/components/ui/textarea";
+import { Loading } from "@/components/custom/loading";
 
-const hostelNames = [
+export const hostelNames = [
   "Ammar", 
   "Amna", 
   "Attar", 
@@ -65,7 +67,9 @@ export default function NewOrder() {
   const [name, setName] = useState("")
   const [phone, setPhone] = useState("")
   const [hostel, setHostel] = useState("")
+  const [instructions, setInstructions] = useState("")
   const [date, setDate] = useState<Date>()
+  // const [deliveryTime, setDeliveryTime] = useState<number>()
 
   const orderingToday = date && Math.abs(date.getTime() - Date.now()) <= 86400000 && date.getDate() === new Date().getDate()
 
@@ -79,7 +83,7 @@ export default function NewOrder() {
     }
   }, [date, orderingToday])
 
-  const [stock, setStock] = useState<StockType[]>([])
+  const [stock, setStock] = useState<StockType[]>()
 
   useEffect(() => {
     const fetchStock = async () => {
@@ -91,7 +95,6 @@ export default function NewOrder() {
       })
       const {stockItems} = await res.json()
 
-      console.log(stockItems)
       setStock(stockItems)
     }
     fetchStock()
@@ -113,6 +116,8 @@ export default function NewOrder() {
       hostel,
       phone,
       date,
+      // deliveryTime,
+      instructions,
       items,
     }
 
@@ -180,14 +185,17 @@ export default function NewOrder() {
             ))}
           </SelectContent>
         </Select>
-        <DatePicker onChange={(date) => {setDate(d => date)}} future={true}/>
+          <DatePicker onChange={(date) => {setDate(d => date)}} future={true}/>
+        {/* <div className="flex gap-2">
+          <TimePicker promptString="Pick the time of Delivery" startingTime={deliveryTime} onChange={(time) => setDeliveryTime(time)}/>
+        </div> */}
       </div>
       <Separator />
       <div className="flex xl:flex-row flex-col gap-4">
         <div className="flex-[3_0_0]">
 
         <ScrollArea className="h-[50vh] md:h-[69vh] w-full">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-2 min-[1450px]:grid-cols-3 sm:gap-3 gap-2">
+        {stock ? <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-2 min-[1450px]:grid-cols-3 sm:gap-3 gap-2">
             {stock.map((item) => 
               <Card className="flex sm:flex-col sm:justify-between items-center gap-3 sm:gap-2 p-3" key={item.name}>
                 <div className="flex justify-between items-center w-full flex-col-reverse gap-2 xs:flex-row">
@@ -198,9 +206,8 @@ export default function NewOrder() {
                   {(orderingToday && item.stock !== -1) ? <Badge variant={item.stock ? "secondary" : "destructive"} className="w-[4.5rem] justify-center">{`${item.stock ? `${item.stock} Left` : "Sold Out"}`}</Badge> : <div className="flex-1"></div>}
                   <StepPicker value={bill[item.name]?.quantity || 0} onChange={(quantity) => setBill(b => ({...b, [item.name]: {...item, quantity}}))} max={item.stock !== -1 && orderingToday ? item.stock : undefined}/>
                 </div>
-              </Card>
-            )}
-          </div>
+              </Card>)}
+          </div>: <Loading />}
         </ScrollArea>
         </div>
         <Separator orientation={"vertical"} className="hidden sm:block" />
@@ -221,7 +228,8 @@ export default function NewOrder() {
             </div>
             <Dialog>
               <DialogTrigger 
-              disabled={billTotal === 0 || !name || !hostel || !date || !phone || !validNumber(phone)}
+              disabled={billTotal === 0 || !name || !hostel || !date || !phone || !validNumber(phone) }
+                //|| deliveryTime === undefined}
               >
                 Place Order
               </DialogTrigger>
@@ -242,9 +250,12 @@ export default function NewOrder() {
                       </div>
                       <div className="flex w-full items-baseline justify-between">
                         <p className="text-muted-foreground text-xs xs:text-sm italic">{phone}</p>
-                        <p className="text-muted-foreground text-xs xs:text-sm">{date ? format(date, "PPP") : "Tomorrow"}</p>
+                        <p className="text-muted-foreground text-xs xs:text-sm">{`${date ? format(date, "PPP") : ""}`}</p> 
+                        {/* at ${get12HourTime(deliveryTime)}`}</p> */}
                       </div>
                     </div>
+                    <Separator />
+                      <Textarea className="font-mono" placeholder="Additional Instructions" value={instructions} onChange={(e) => setInstructions(e.target.value)} />
                     <Separator />
                     <div className="flex w-full justify-between">
                       <p className="text-lg xs:text-2xl font-bold">Order Total</p>

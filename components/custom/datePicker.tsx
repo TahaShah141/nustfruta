@@ -16,10 +16,11 @@ import {
 type Props = {
   onChange?: (date: Date) => void
   future?: boolean
+  blank?: boolean
 }
 
-export const DatePicker: React.FC<Props> = ({onChange, future=false}) => {
-  const [date, setDate] = React.useState<Date>(new Date())
+export const DatePicker: React.FC<Props> = ({onChange, future=false, blank=false}) => {
+  const [date, setDate] = React.useState<Date | undefined>(blank ? undefined : new Date())
 
   React.useEffect(() => {
     if (date && onChange && (!future || date.getTime() >= Date.now() - 86400000))  onChange(date)
@@ -43,7 +44,7 @@ export const DatePicker: React.FC<Props> = ({onChange, future=false}) => {
         <Calendar
           mode="single"
           selected={date}
-          onSelect={(date) => {if (date && (!future || date.getTime() >= Date.now() - 86400000)) setDate(date); else setDate(new Date())}}
+          onSelect={(date) => {if (date && (!future || date.getTime() >= Date.now() - 86400000)) setDate(date); else setDate(blank ? undefined : new Date())}}
           initialFocus
         />
       </PopoverContent>

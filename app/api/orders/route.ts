@@ -7,8 +7,11 @@ export async function GET() {
 
   await connectMongo()
 
-  //populate the orders' items array with the Stock reference and the quantity attached with it  
-  const orders = await Order.find().populate("items.stock").sort({date: 1}).exec()
+  const orders = await Order.find().populate("items.stock").sort({
+    date: 1, 
+    // deliveryTime: 1, 
+    createdAt: 1
+  }).exec()
 
   return Response.json({orders})
 }

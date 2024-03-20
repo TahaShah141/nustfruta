@@ -20,7 +20,7 @@ export async function POST(request: NextRequest) {
 
       for (const item of expandedOrder?.items) {
         if (item.stock.stock !== -1) {
-          await Stock.findByIdAndUpdate(item.stock._id, {stock: item.stock.stock - item.quantity})
+          await Stock.findByIdAndUpdate(item.stock._id, {stock: item.stock.stock - item.quantity/item.stock.step}).exec()
         }
       }
     }

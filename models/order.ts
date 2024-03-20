@@ -6,7 +6,9 @@ export type OrderType = {
   customer: string
   hostel: string
   phone: string
+  instructions: string
   date: Date
+  // deliveryTime: number
   items: {stock: StockType, quantity: number}[]
   paid: boolean
   fulfilled: boolean
@@ -50,7 +52,17 @@ const OrderSchema = new mongoose.Schema({
   fulfilled: {
     type: Boolean,
     default: false
+  },
+  // deliveryTime: {
+  //   type: Number,
+  //   required: true
+  // },
+  instructions: {
+    type: String,
+    default: ""
   }
+}, {
+  timestamps: true
 })
 
 export default mongoose.models.Order || mongoose.model<OrderType>("Order", OrderSchema)
